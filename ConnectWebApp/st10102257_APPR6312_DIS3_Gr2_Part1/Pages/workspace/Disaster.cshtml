@@ -1,0 +1,60 @@
+﻿@page
+@model st10102257_APPR6312_DIS3_Gr2_Part1.Pages.workspace.DisasterModel
+@{
+    ViewData["Title"] = "Disaster";
+}
+
+
+<div class="row">
+    <div class="row text-center">
+        <div class="d-flex justify-content-start">
+            <a href="javascript:history.back()" class="link justify-content-start" style=" text-decoration: none !important"><i class="ri-arrow-left-s-line"></i>&nbsp;Back</a>
+        </div>
+        <h1 class="display-4">Disaster</h1>
+        <p class="lead">
+            Record a new disaster
+        </p>
+    </div>
+</div>
+
+
+<div class="row dlex justify-content-center">
+    <div class="col-sm-12 col-md-8 col-lg-8">
+        <div class="row ">
+            <form method="post" class="row g-3">
+                <div class="col-6">
+                    <label class="form-label">Disaster</label>
+                    <input type="text" asp-for="Disaster.Name" class="form-control" id="donorNameField">
+                </div>
+                <div class="col-6">
+                    <label for="" class="form-label">Location</label>
+                    <input type="text" asp-for="Disaster.Location" class="form-control" id="" required>
+                </div>
+                <div class="col-6">
+                    <label for="" class="form-label">Started</label>
+                    <div class="input-group ">
+                        <span class="input-group-text" id=""></span>
+                        <input type="date" asp-for="Disaster.startDate" class="form-control" id="" aria-describedby="inputGroupPrepend" required>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label for="" class="form-label">Ended</label>
+                    <div class="input-group ">
+                        <span class="input-group-text" id=""></span>
+                        <input type="date" asp-for="Disaster.endDate" class="form-control" id="" aria-describedby="inputGroupPrepend" required>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <label for="" class="form-label">Description</label>
+                    <div class="input-group ">
+                        <textarea asp-for="Disaster.Description" class="form-control" id="" rows="3" aria-describedby="inputGroupPrepend" required></textarea>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-custom-dark" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

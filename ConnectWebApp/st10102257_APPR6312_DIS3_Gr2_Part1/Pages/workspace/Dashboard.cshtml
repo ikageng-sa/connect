@@ -1,0 +1,328 @@
+﻿@page
+@model st10102257_APPR6312_DIS3_Gr2_Part1.Pages.workspace.DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+
+    <div class=" row px-5" >
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-inventory-tab" data-bs-toggle="tab" data-bs-target="#nav-inventory" type="button" role="tab" aria-controls="nav-inventory" aria-selected="false">Inventory</button>
+            <button class="nav-link" id="nav-donations-tab" data-bs-toggle="tab" data-bs-target="#nav-donations" type="button" role="tab" aria-controls="nav-donations" aria-selected="false">Donations</button>
+            <button class="nav-link" id="nav-disasters-tab" data-bs-toggle="tab" data-bs-target="#nav-disasters" type="button" role="tab" aria-controls="nav-disasters" aria-selected="false">Disasters</button>
+        </div>
+    </nav>
+
+        <div class="row col-8 tab-content w-100 tab-content" id="myTabContent">
+
+        <div class="tab-pane fade show active" id="nav-inventory" role="tabpanel" aria-labelledby="inventory-tab" tabindex="0">
+            <div class="accordion-container" style="max-height: 25rem;">
+                <div class="accordion" id="donationsAccordion" style="height:100%;">
+                    <div class="row mt-4">
+                        <div class="col-8 card d-flex" style="height:20rem; flex-wrap:wrap; overflow-y:auto; flex-direction:unset;">
+                            
+                                @if(Model.Categories != null)
+                                {
+                                    @foreach ( var category in Model.Categories)
+                                    {
+                                        if(category.Total != 0)
+                                        {
+                                            <div class="col-4 card" style="display:flex; height:fit-content; flex-direction:column; text-align: center;">
+                                                <div class="amount display-5">
+                                                    @(category.Name.ToLower() == "monetary" ? "R " + category.Total : (int)category.Total)
+                                                </div>
+                                                <div class="lead">
+                                                    @category.Name
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                }
+                                
+                        </div>
+                        <div class="col-4">
+                            <div class="row">
+                                <h3>Disasters</</h3>
+                            </div>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Disater</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Disasters != null)
+                                    {
+                                        foreach (var disaster in Model.Disasters.Where(d => d.isActive == false).ToList())
+                                        {
+                                            <tr>
+                                                <td>@disaster.Name</td>
+                                                <td>@disaster.Location</td>
+                                                <td>@disaster.startDate</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                                    
+                        </div>
+                    </div>
+                    <!-- <canvas id="donationsChart" width="600" height="400"></canvas> -->
+
+                </div>
+            </div>
+        </div>
+
+        @if (TempData.ContainsKey("StatusMessage"))
+        {
+            <div class="position-absolute" style="right:0; z-index:999;">
+                <div class="alert alert-info alert-dismissible fade show" style="width:fit-content;">
+                    @TempData["StatusMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        }
+        
+                     
+            <div class="tab-pane fade show" id="nav-donations" role="tabpanel" aria-labelledby="donations-tab" tabindex="0">
+                <div class="row head display-5 d-flex justify-content-between">
+                    <span class="w-25 display-5">Donations</span>
+                    <a type="button" class="btn btn-sm btn-custom-dark" asp-page="Donation"><i class="ri-edit-2-line"></i>New</a>
+                </div>
+                <div class="accordion-container">
+                <div class="accordion" id="donationsAccordion">
+                    @{
+                        int i;
+                    }
+                    @if (Model.Categories != null)
+                    {
+                        @foreach (var cat in Model.Categories)
+                        {
+                            i = 0;
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@cat.ID" aria-expanded="true" aria-controls="collapse_@cat.ID">
+                                        @cat.Name
+                                    </button>
+                                </h2>
+                                <div id="collapse_@cat.ID" class="accordion-collapse collapse" data-bs-parent="#donationsAccordion">
+                                    <div class="accordion-body">
+
+                                        <table class="table">
+                                            <tbody>
+                                                @foreach (var donations in Model.AllDonations.Where(d => d.CategoryName == cat.Name))
+                                                {
+                                                    i += 1;
+                                                    <tr>
+                                                        <th scope="row">@i</th>
+                                                        <td>@(
+                                                        donations.Donor == null ? "ANONYMOUS" : donations.Donor
+                                                        )</td>
+                                                        <td>
+                                                            @if (donations.Description != null)
+                                                            {
+                                                                <button type="button" style="background-color:transparent; border-style: none; border-radius:50%; padding: 0; margin: 0;height:25px;"
+                                                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                                                data-bs-custom-class="custom-tooltip"
+                                                                data-bs-title="@donations.Description">
+                                                                    <i class="ri-information-line"></i>
+                                                                </button>
+                                                            }
+                                                        </td>
+                                                        <td>@donations.Date.ToString("dd-MMM-yyyy")</td>
+
+                                                        <td>@(
+                                                        cat.Name.ToString() == "Monetary" ? "R " + donations.Amount : (int)donations.Amount
+                                                        )</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                </div>
+            </div>
+        <div class="tab-pane fade show" id="nav-disasters" role="tabpanel" aria-labelledby="donations-tab" tabindex="0">
+            <div class="row head display-5 d-flex justify-content-between">
+                <span class="w-25 display-5">Disasters</span>
+                <a type="button" class="btn btn-sm btn-custom-dark" asp-page="Disaster"><i class="ri-edit-2-line"></i>New</a>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Disaster</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Started</th>
+                        <th scope="col">Ended</th>
+                        <th scope="col">Status</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int n = 0;
+                    }
+                    @if(Model.Disasters != null)
+                        @foreach(var dis in Model.Disasters)
+                        {
+                            n += 1;
+                            <tr>
+                                <th scope="row">@n</th>
+                                <td>@dis.Name</td>
+                                <td>@dis.Description</td>
+                                <td>@dis.Location</td>
+                                <td>@dis.startDate.ToString("dd-MMM-yyyy")</td>
+                                <td>@dis.endDate.ToString("dd-MMM-yyyy")</td>
+                                <td>@dis.isActive</td>
+                                <td>
+                                    <button type="button" class="btn btn-sm btn-primary"
+                                    data-disaster-id="@dis.ID"
+                                    data-disaster-name="@dis.Name"
+                                    data-disaster-description="@dis.Description"
+                                    data-disaster-location="@dis.Location"
+                                    data-disaster-start="@dis.startDate"
+                                    data-disaster-end="@dis.endDate"
+                                    data-bs-toggle="modal"
+                                    onclick="openAllocateModal(this);"
+                                    data-bs-target="#statusModal">
+                                        Status
+                                    </button>
+                                </td>
+                                @if(dis.isActive == true)
+                                {                                    
+                                    <td>
+                                        <a class="btn btn-sm btn-primary" asp-page="AllocateDonation" asp-route-disasterId="@dis.ID">
+                                            Allocate
+                                        </a>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="statusModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" asp-page-handler="ChangeStatus">
+                <div class="modal-body">
+                   <input type="hidden" name="disaster_id" id="modal_disaster_id" />
+                   <p id="name"></p>
+                   <p id="des"></p>
+                   <p id="loc"></p>
+
+                   <div class="form-row">
+                       <label for="isAlleviated" class="form-label">Change disaster status</label>
+                       <select class="form-select" name="status">
+                           <option selected value="" disabled>Choose...</option>
+                           <option value="True">Active</option>
+                           <option value="False">Inactive</option>
+                       </select>
+                   </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-sm btn-primary">Change status</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<script>
+    var ctx = document.getElementById('donationsChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize(Model.DonationCategories)),
+            datasets: [{
+                label: 'Total Donation Amount',
+                data: @Html.Raw(Json.Serialize(Model.CategoryTotals)),
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            plugins: {
+                datalabels: {
+                    color: 'black',
+                    anchor: 'end',
+                    align: 'top',
+                    formatter: function (value) {
+                        return value.toLocaleString();
+                    },
+                    display: function (context) {
+                        return context.dataset.data[context.dataIndex] > 0; // Display label if value is greater than 0
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+
+    var myModal = new bootstrap.Modal(document.getElementById('statusModal'));
+    var modalTitle = document.querySelector('.modal-title');
+    document.querySelector('.modal-body').textContent = 'Disaster Information';
+
+    function openAllocateModal(button) {
+        var disasterId = button.getAttribute('data-disaster-id');
+        var disasterName = button.getAttribute('data-disaster-name');
+        var disasterDes = button.getAttribute('data-disaster-description');
+        var disasterLocation = button.getAttribute('data-disaster-location');
+        var disasterStarted = button.getAttribute('data-disaster-start');
+        var disasterEnded = button.getAttribute('data-disaster-end');
+
+
+        document.getElementById('modal_disaster_id').value = disasterId; 
+        document.getElementById('name').textContent = "Disaster:    " + disasterName;
+        document.getElementById('des').textContent = "Description:  " + disasterDes;
+        document.getElementById('loc').textContent = "Location: " + disasterLocation;
+                
+
+        myModal.show();
+    }
+
+</script>
+
+
+@Html.Raw("<script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js' integrity='sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r' crossorigin='anonymous'></script>")
+@Html.Raw("<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js' integrity='sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+' crossorigin='anonymous'></script>")
+
+<script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>

@@ -1,0 +1,159 @@
+﻿@page
+@model st10102257_APPR6312_DIS3_Gr2_Part1.Pages.workspace.DonationModel
+@{
+    ViewData["Title"] = "Donation";
+}
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="resultLiveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+                Hello, world! This is a toast message.
+            </div>
+            <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="row text-center">
+        <div class="d-flex justify-content-start">
+            <a href="javascript:history.back()" class="link justify-content-start" style=" text-decoration: none !important"><i class="ri-arrow-left-s-line"></i>&nbsp;Back</a>
+        </div>
+        <h1 class="display-4">DONATION</h1>
+        <p class="lead">
+            On behalf of the person who will be blessed with what you are 
+            about to donate, thank you <i class="ri-lg ri-shake-hands-line"></i>
+        </p>
+    </div>
+</div>
+
+
+<div class="row dlex justify-content-center">
+    <div class="col-sm-12 col-md-8 col-lg-8">
+        <div class="row p-4">
+            <form method="post" asp-page-handler="RecordDonation" class="row g-3">
+                  <div class="col-6">
+                    <label class="form-label">Donor</label>
+                    <input type="text" name="donor"  class="form-control" id="donorNameField">
+                    <div class="lead" style="font-size:12px;">
+                        <input class="form-check-input" type="checkbox" onclick="isChecked();" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Anonymous
+                        </label>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                        <label for="" class="form-label">Date</label>
+                        <div class="input-group ">
+                              <span class="input-group-text" id=""></span>
+                              <input type="date" name="date" class="form-control" id="" aria-describedby="inputGroupPrepend" required>
+                        </div>
+                  </div>
+                <div class="col-6">
+                    <label for="validationCustom03" class="form-label">Category</label>
+                    <select class="form-select" name="category" required onchange="showModal(this)">
+                        <option selected disabled value="">Choose...</option>
+                        @foreach(var obj in Model.Categories){
+                            <option value="@obj.ID">@obj.Name</option>
+                        }
+                        <option value="New">New</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                        <label for="validationCustom04" class="form-label">Amount</label>
+                    <div class="input-group ">
+                            <span class="input-group-text" id="">#</span>
+                            <input type="text"name="amount" class="form-control" id="" aria-describedby="inputGroupPrepend" required>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <label for="" class="form-label">Description</label>
+                    <textarea rows="3" name="description" class="form-control" id=""></textarea>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-sm btn-custom-orange" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Modal Form -->
+            <form method="post" asp-page-handler="CreateCategory">
+                <div class="modal-body">
+                    <p>Enter a new category</p>
+                    <div class="col-md-6">
+                        <label for="category" class="form-label">Category</label>
+                        <div class="input-group">
+                            <input type="text" name="CategoryName" class="form-control" id="category" aria-describedby="inputGroupPrepend">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-sm btn-custom-orange" id="saveCategory">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script type = "text/javascript" >
+
+    function showModal(selectElement) {
+        if (selectElement.value === 'New') {
+            // Use Bootstrap modal method to show your modal
+            $('#myModal').modal('show');
+        }
+    }
+
+    function validateCategory() {
+        var categoryInput = document.getElementById("category");
+        var reCategoryInput = document.getElementById("re-category");
+        var saveButton = document.getElementById("saveCategory");
+
+        // Check if the values of both inputs are the same
+        if (categoryInput.value === reCategoryInput.value) {
+            // Enable the "Save" button
+            saveButton.disabled = false;
+        } else {
+            // Disable the "Save" button
+            saveButton.disabled = true;
+        }
+    }
+
+    // Add an event listener to trigger the validation on input change
+    // document.getElementById("category").addEventListener("input", validateCategory);
+    // document.getElementById("re-category").addEventListener("input", validateCategory);
+
+
+    function isChecked() {
+        var donorField = document.getElementById('donorNameField')
+        if (document.getElementById('flexCheckDefault').checked) {
+            donorField.setAttribute('disabled', '');
+            donorField.value = '';
+        } else {
+                document.getElementById('donorNameField').removeAttribute('disabled');
+        }
+    }
+
+    const toastTrigger = document.getElementById('saveCategory')
+    const toastLiveExample = document.getElementById('resultLiveToast')
+
+    if (toastTrigger) {
+      const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+      toastTrigger.addEventListener('click', () => {
+        toastBootstrap.show()
+      })
+    }
+</script>

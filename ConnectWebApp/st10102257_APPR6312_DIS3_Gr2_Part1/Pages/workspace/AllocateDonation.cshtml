@@ -1,0 +1,70 @@
+﻿@page "/AllocateDonation/{disasterId}"
+@model st10102257_APPR6312_DIS3_Gr2_Part1.Pages.workspace.AllocateDonationModel // Change the namespace
+@{
+}
+<div class="row d-flex justify-content-center">
+    
+    <form method="post" id="allocate_form" class="col-8">
+        <div class="row">
+            <input type="hidden" name="disasterId" class="form-control" id="disasterId" value="@Model.disasterId" aria-describedby="inputGroupPrepend">
+            <input type="hidden" name="donationId" class="form-control" id="donationId" aria-describedby="inputGroupPrepend">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Disaster</strong>:   @Model.Disaster?.Name</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Location</strong>:   @Model.Disaster?.Location</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Started</strong>: @Model.Disaster?.startDate.ToString("dd-MMM-yyyy")</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Ended</strong>: @Model.Disaster?.endDate.ToString("dd-MMM-yyyy")</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <p><strong>Description</strong>: @Model.Disaster?.Description</p>
+                </div>
+            </div>
+            <div class="col-6">
+                <label class="form-label">Select from categories</label>
+                <select class="form-select" name="category" id="categorySelect" required>
+                    <option selected disabled value="">Choose...</option>
+                    @foreach (var obj in Model.Categories)
+                    {
+                        <option value="@obj.ID" data-available="@obj.Total">@obj.Name (Available: @(obj.Name.ToLower() == "monetary" ? "R " + obj.Total : (int)obj.Total + " items"))</option>
+                    }
+                </select>
+            </div>
+            <div class="col-6">
+                <label class="form-label">Amount of money/items to send</label>
+                <input type="text" name="amount_to_send"  class="form-control" id="amountInput">
+            </div>
+        </div>
+        <div class="row pt-3">
+            <button type="submit" class="btn btn-sm btn-custom-orange" id="allocateBtn" disabled>Allocate</button>
+        </div>
+    </form>
+</div>
+
+
+<script>
+
+    // Get references to elements
+    const categorySelect = document.getElementById("categorySelect");
+    const amountInput = document.getElementById("amountInput");
+    const submitButton = document.getElementById("allocateBtn");
+
+    // Attach an event listener to the amount input
+    amountInput.addEventListener("input", function () {
+        const selectedOption = categorySelect.options[categorySelect.selectedIndex];
+        const availableAmount = parseFloat(selectedOption.getAttribute("data-available"));
+        const enteredAmount = parseFloat(amountInput.value);
+
+        // Enable or disable the submit button based on the comparison
+        submitButton.disabled = enteredAmount > availableAmount;
+    });
+</script>

@@ -1,0 +1,142 @@
+﻿@page
+@inject SignInManager<IdentityUser> SignInManager
+@if (SignInManager.IsSignedIn(User))
+{
+    <script>
+        window.location.href = "/workspace/Dashboard"; // Replace with your desired URL
+    </script>
+}
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="landing pt-4">
+    <div class="row col-md-12 col-lg-12 mt-5">
+        <div class="d-flex col-sm-12 col-md-6 col-lg-6 h-100">
+            <div class="d-flex justify-content-end align-items-center">
+                <img class="display-logo" src="./images/Standard Collection 23logo.svg" />
+            </div>
+        </div>
+        <div class="p-4 col-sm-12 col-md-6 col-lg-6">
+            <div class="row">
+                <p class="display-4 fw-bold">A Place For Change</p>
+            </div>
+            <div class="row">
+                <p class="fs-3 fw-light">
+                    Our success is our communities success. We believe in helping others
+                    however we can.
+                </p>
+            </div>
+            <div class="row btn-custom-group">
+                <a href="#" class="btn btn-custom-dark">DONATE</a>
+                <a href="#" class="btn btn-custom-light">CONTACT US</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="about-sec fill-screen">
+    <div class="row">
+        <h2 class="display-4">About Us</h2>
+    </div>
+    <div class="row p-5">
+        <div class="col-md-2 col-lg-2">
+            <div class="color-scheme">
+                <div class="cs-tile"></div>
+                <div class="cs-tile"></div>
+                <div class="cs-tile"></div>
+                <div class="cs-tile"></div>
+                <div class="cs-tile"></div>
+            </div>
+        </div>
+        <div class="col-md-10 col-lg-10">
+            <div class="row">
+                <p class="display-7">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce tempor felis at turpis tristique blandit.
+                    Nam euismod eros suscipit purus fermentum venenatis. Aenean rutrum scelerisque enim efficitur hendrerit.
+                    Fusce efficitur at ipsum id interdum. Maecenas pulvinar enim eu lorem lacinia, eget suscipit neque condimentum.
+                    Etiam at egestas orci, consequat interdum velit. Aliquam erat volutpat. Cras aliquam, ante eget porttitor varius.
+                </p>
+            </div>
+            <div class="row img-row p-1">
+                <img class="img-block" src="~/images/Rectangle 20.png" />
+                <img class="img-block" src="~/images/Rectangle 21.png" />
+                <img class="img-block" src="~/images/Rectangle 22.png" />
+                <img class="img-block" src="~/images/Rectangle 23.png" />
+            </div>
+        </div>
+    </div>
+    <div class="row how-to">
+        <div class="row">
+            <h3 class="display-6">How To Get Involved</h3>
+        </div>
+        <div class="row p-5">
+            <div class="col-md-4 col-lg-4">
+                <div class="row">
+                    <div class="circle-outline col-auto">
+                        <p class="display-5 step-numbering">1</p>
+                    </div>
+                    <div class="step-title col-auto">
+                        <h4 class="fs-3">Lorem Ipsum</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Fusce tempor felis at turpis tristique blandit.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4">
+                <div class="row">
+                    <div class="circle-outline col-auto">
+                        <p class="display-5 step-numbering">2</p>
+                    </div>
+                    <div class="step-title col-auto">
+                        <h4 class="fs-3">Lorem Ipsum</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Fusce tempor felis at turpis tristique blandit.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-4">
+                <div class="row">
+                    <div class="circle-outline col-auto">
+                        <p class="display-5 step-numbering">3</p>
+                    </div>
+                    <div class="step-title col-auto">
+                        <h4 class="fs-3">Lorem Ipsum</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                        Fusce tempor felis at turpis tristique blandit.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row ready-to">
+        <div class="row">
+            <h3 class="display-6">Ready To Better A Life?</h3>
+            <p class="lead">Get in touch with us</p>
+        </div>
+        <div class="col-6">
+            <div class="row hr-media-icons">
+                <!--<a href="#"><i class="ri-instagram-line"></i></a>-->
+                <a href="#"><i class="ri-2x ri-instagram-line"></i></a>
+                <a href="#"><i class="ri-2x ri-twitter-line"></i></a>
+                <a href="#"><i class="ri-2x ri-facebook-box-line"></i></a>
+                <a href="#"><i class="ri-2x ri-whatsapp-line"></i></a>
+                </>
+            </div>
+            <div class="col-6">
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,57 @@
+﻿@page
+@model st10102257_APPR6312_DIS3_Gr2_Part1.Pages.contributionModel
+@{
+    ViewData["Title"] = "Contribution";
+}
+
+<div class="row">
+    <div class="col-sm-12 col-md-4 col-lg-4">
+        <div class="col-12">
+            <div class="rounded-border">
+                <div class="count">R@(Model.monetaryDonations.Sum(d => d.Amount))</div>
+                <div class="text-center count-title">Monetary Donations Received</div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="rounded-border">
+                <div class="count">@Model.goodsDonations.Sum(d => (int)d.Amount)</div>
+                <div class="text-center count-title">Goods Donations Received</div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4 col-lg-4">
+            <div class="rounded-border">
+                <div class="count">@Model.disasters.Count()</div>
+                <div class="text-center count-title">Total Disasters</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-12 col-md-8 col-lg-8" style="max-height: 100vh; overflow-y: auto;">
+        <div class="row">
+            <h3 class="display-5">Active Disasters</h3>
+        </div>
+        <table class="table table-hover">
+            <tbody>
+                @{
+                    int i = 0;
+                }
+                @if(Model.Allocations != null)
+                {
+                    foreach( var allocation in Model.Allocations)
+                    {
+                        i += 1;
+                        <tr class="col">
+                            <th scope="row">@i</th>
+                            <td><strong>@allocation.Location</strong></td>
+                            <td>@allocation.Name</td>
+                        </tr>
+                        <tr>
+                            <td class="col"></td>
+                            <td>Monetary allocated: R@(allocation.MonetaryAmount)</td>
+                            <td>Goods allocated: @((int)allocation.GoodsAmount) items</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

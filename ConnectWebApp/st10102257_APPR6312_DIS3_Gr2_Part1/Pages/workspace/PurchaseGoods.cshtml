@@ -1,0 +1,95 @@
+﻿@page
+@model st10102257_APPR6312_DIS3_Gr2_Part1.Pages.workspace.PurchaseGoodsModel
+@{
+}
+
+<div class="row">
+    <div class="row text-center">
+        <div class="d-flex justify-content-start">
+            <a href="javascript:history.back()" class="link justify-content-start" style=" text-decoration: none !important"><i class="ri-arrow-left-s-line"></i>&nbsp;Back</a>
+        </div>
+        <h1 class="display-4">Record a New Purchase</h1>
+    </div>
+</div>
+
+
+<div class="row dlex justify-content-center">
+    <div class="col-sm-12 col-md-8 col-lg-8">
+        <div class="row p-4">
+            <form method="post" class="row g-3">
+                <div class="col-md-6">
+                    <label for="validationCustom04" class="form-label">Available Amount</label>
+                    <div class="input-group ">
+                        <span class="input-group-text" id="">R</span>
+                        <input type="text" class="form-control" id="availableAmount" data-data-available="@(Model.Categories.Where(d => d.Name.ToLower() == "monetary").Sum(d => d.Total))" id="" value="@(Model.Categories.Where(d => d.Name.ToLower() == "monetary").Sum(d=> d.Total))" aria-describedby="inputGroupPrepend" readonly>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label for="validationCustom03" class="form-label">Category</label>
+                    <select class="form-select" name="category" id="categorySelect" required>
+                        <option selected disabled value="">Choose...</option> 
+                        @foreach (var obj in Model.Categories)
+                        {
+                            @if(obj.Name.ToLower() != "monetary"){
+                                <option value="@obj.ID">@obj.Name</option>
+                            }
+                        } 
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="validationCustom04" class="form-label">Number of items to purchase</label>
+                    <div class="input-group ">
+                        <span class="input-group-text" id="">#</span>
+                        <input type="text" name="items_count" class="form-control" id="itemsCountInput" aria-describedby="inputGroupPrepend" required>
+                    </div>
+                </div>
+                  <div class="col-6">
+                        <label for="" class="form-label">Date</label>
+                        <div class="input-group ">
+                              <span class="input-group-text" id=""></span>
+                              <input type="date" name="date" class="form-control" id="" aria-describedby="inputGroupPrepend" required>
+                        </div>
+                  </div>
+                <div class="col-md-6">
+                    <label for="validationCustom04" class="form-label">Amount to use</label>
+                    <div class="input-group ">
+                        <span class="input-group-text" id="">R</span>
+                        <input type="text" name="amount_used" class="form-control" id="amountInput" aria-describedby="inputGroupPrepend" required>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <label for="" class="form-label">Description</label>
+                    <textarea rows="3" name="description" class="form-control" id=""></textarea>
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-sm btn-custom-orange" id="purchaseBtn" type="submit" disabled>Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    const availableAmountInput = document.getElementById("availableAmount");
+    const amountInput = document.getElementById("amountInput");
+    const itemsCountInput = document.getElementById("itemsCountInput");
+    const submitButton = document.getElementById("purchaseBtn");
+
+    // Attach event listeners to the amount input and items count input
+    amountInput.addEventListener("input", toggleSubmitButtonState);
+    itemsCountInput.addEventListener("input", toggleSubmitButtonState);
+
+    function toggleSubmitButtonState() {
+        const availableAmount = parseFloat(availableAmountInput.getAttribute("data-data-available"));
+        const enteredAmount = parseFloat(amountInput.value);
+        const enteredItemCount = parseInt(itemsCountInput.value);
+
+        // Check if both inputs contain numeric values
+        const isNumeric = !isNaN(enteredAmount) && !isNaN(enteredItemCount);
+
+        // Enable or disable the submit button based on the comparisons
+        submitButton.disabled = !isNumeric || enteredAmount > availableAmount;
+    }
+</script>
